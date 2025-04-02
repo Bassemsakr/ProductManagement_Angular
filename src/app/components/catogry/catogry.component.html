@@ -1,0 +1,182 @@
+<div class="container mt-5">
+    <h2 class="text-center mb-4">Category Finder</h2>
+  
+    <div class="input-group mb-4">
+      <input type="text" class="form-control" placeholder="Enter Category ID" #categoryIdInput />
+      <button class="btn btn-success" (click)="getById(categoryIdInput.value)">Find</button>
+    </div>
+  
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let item of filteredCategory | keyvalue">
+        <strong>{{ item.key }}</strong>: {{ item.value }}
+      </li>
+    </ul>
+  </div>
+  
+  <!-- Buttons Row -->
+  <div class="container mt-3">
+    <div class="d-flex justify-content-end gap-2">
+      <!-- Add Category Button -->
+      <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addModal">
+        <i class="bi bi-plus-lg"></i> Add Category
+      </button>
+  
+      <!-- Delete Category Button -->
+      <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal">
+        <i class="fas fa-trash"></i> Delete Category
+      </button>
+    </div>
+  </div>
+  
+  <!-- Categories Table -->
+  <div class="table-container p-3 rounded-3 shadow-sm">
+    <table class="table table-hover align-middle">
+      <thead class="gradient-header">
+        <tr>
+          <th class="ps-4">ID</th>
+          <th>Category Name</th>
+          <th>Product Count</th>
+          <th class="text-end pe-4">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let category of categories" class="table-row-hover">
+          <td class="ps-4 fw-semibold text-primary">{{ category.id }}</td>
+          <td>
+            <span class="category-name">{{ category.name }}</span>
+          </td>
+          <td>
+            <span class="badge bg-primary rounded-pill">
+              {{ category.productCount || 0 }}
+            </span>
+          </td>
+          <td class="text-end pe-4">
+            <div class="d-flex justify-content-end gap-2">
+              <button class="btn btn-sm btn-outline-primary" 
+                      (click)="openEditModal(category)" 
+                      data-bs-toggle="modal" 
+                      data-bs-target="#editModal">
+                <i class="fas fa-edit"></i> Edit
+              </button>
+            </div>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <br>
+  <br>
+  <br>
+  <!-- Back Button -->
+  <div class="position-relative mt-4">
+    <button class="btn btn-primary btn-lg shadow-lg px-5 py-3 rounded-pill position-absolute end-0" (click)="back()">
+      ⬅️ Back
+    </button>
+  </div>
+  <br>
+  <br>
+  
+  <!-- Delete Category Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteModalLabel">Delete Category</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form #deleteForm="ngForm" (submit)="deleteCategory(categoryIdToDelete)">
+            <div class="mb-3">
+              <label for="categoryId" class="form-label">Category ID</label>
+              <input type="text" class="form-control" id="categoryId" name="categoryId" [(ngModel)]="categoryIdToDelete" required>
+            </div>
+            <button type="submit" data-bs-dismiss="modal" class="btn btn-danger w-100" [disabled]="deleteForm.invalid">
+              <i class="fas fa-trash"></i> Delete Category
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Add Category Modal -->
+  <div class="modal fade" id="addModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Add Category</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <h2 class="text-center mb-4">Add Category</h2>
+              <form (submit)="addCategory()" #addForm="ngForm">
+                <div class="mb-3">
+                  <label for="categoryName" class="form-label">Category Name</label>
+                  <input type="text" class="form-control" id="categoryName" 
+                         name="name" [(ngModel)]="newCategory.name" required>
+                </div>
+  
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary" 
+                          data-bs-dismiss="modal" [disabled]="addForm.invalid">
+                    <i class="fas fa-save me-2"></i>Add Category
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Edit Category Modal -->
+  <div class="modal fade" id="editModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-bottom">
+      <div class="modal-content">
+        <div class="modal-header bg-primary text-white">
+          <h5 class="modal-title">Edit Category</h5>
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+  
+        <div class="container mt-3">
+          <div class="row justify-content-center">
+            <div class="col-md-6">
+              <h2 class="text-center mb-4">Edit Category</h2>
+              <form (submit)="updateCategory()" #editForm="ngForm">
+                <input type="hidden" name="id" [(ngModel)]="editingCategory.id">
+                
+                <div class="mb-3">
+                  <label for="editName" class="form-label">Category Name</label>
+                  <input type="text" class="form-control" id="editName" 
+                         name="name" [(ngModel)]="editingCategory.name" required>
+                </div>
+  
+                <div class="d-grid gap-2">
+                  <button type="submit" class="btn btn-primary" 
+                          [disabled]="editForm.invalid">
+                    <i class="fas fa-save me-2"></i>Update Category
+                  </button>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+        
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">
+            <i class="fas fa-times me-2"></i>Cancel
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

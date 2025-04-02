@@ -1,0 +1,59 @@
+.hero {
+    background: url('https://source.unsplash.com/1600x700/?laptop,smartphone') no-repeat center center/cover;
+    height: 70vh;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 20px;
+  }
+
+  .hero h1 {
+    font-size: 3rem;
+    font-weight: bold;
+  }
+
+  .product-card img {
+    height: 220px;
+    object-fit: cover;
+    transition: transform 0.3s ease-in-out;
+  }
+
+  .product-card:hover img {
+    transform: scale(1.05);
+  }
+
+  .testimonial {
+    background: #f8f9fa;
+    padding: 50px 0;
+  }
+
+  .testimonial .carousel-item {
+    text-align: center;
+  }
+
+  .cta-section {
+    background: #007bff;
+    color: white;
+    text-align: center;
+    padding: 50px 0;
+  }
+
+  .footer {
+    background: #343a40;
+    color: white;
+    padding: 20px 0;
+    text-align: center;
+  }
+
+  .footer a {
+    color: white;
+    text-decoration: none;
+    margin: 0 10px;
+  }
+
+  .footer a:hover {
+    text-decoration: underline;
+  }

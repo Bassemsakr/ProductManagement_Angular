@@ -1,0 +1,27 @@
+.modal-dialog-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%; /* Adjust width as needed */
+    max-width: 500px; /* Prevent it from being too wide */
+  }
+  
+  .modal.fade .modal-dialog-bottom {
+    transform: translateX(-50%) translateY(100%);
+    transition: transform 0.3s ease-out;
+  }
+  
+  .modal.show .modal-dialog-bottom {
+    transform: translateX(-50%) translateY(0);
+  }
+  .btn-primary {
+  background-color: #007bff;
+  border: none;
+  transition: all 0.3s ease-in-out;
+}
+
+.btn-primary:hover {
+  background-color: #0056b3;
+  transform: scale(1.05);
+}
